@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, Text, View, ScrollView, Button, Image, Pressable, Alert, Share, SafeAreaView, StatusBar as RNStatusBar } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView, Button, Image, Pressable, Alert, Share, SafeAreaView, StatusBar as RNStatusBar, BackHandler } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useEffect, useState } from 'react';
 import fbase from '../firebaseConfig';
@@ -15,6 +15,7 @@ import share from "../assets/share.png"
 import chat from "../assets/message.png"
 import { BannerAd, BannerAdSize, InterstitialAd, TestIds } from 'react-native-google-mobile-ads';
 import analytics from '@react-native-firebase/analytics';
+
 
 
 const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
@@ -236,18 +237,36 @@ export default function Index({ navigation }) {
     useEffect(() => ClassesSet(), [selectedFloor])
 
     useEffect(() => {
-        if (selectedBlock && dbData) {
-            const fs = []
-            for (const room in dbData[selectedBlock]) {
-                if (!room) continue
-                const floor = room.split("-")[1][0]
-                if (!fs.includes(floor))
-                    fs.push(floor)
+        // check internet access
+        // if no internet access, show alert
+        fetch("https://www.google.com", {
+            method: "GET", headers: { "Content-Type": "application/json" }
+        }).then((res) => {
+            if (res.status == 200) {
+                console.log("internet access")
+                if (selectedBlock && dbData) {
+                    const fs = []
+                    for (const room in dbData[selectedBlock]) {
+                        if (!room) continue
+                        const floor = room.split("-")[1][0]
+                        if (!fs.includes(floor))
+                            fs.push(floor)
+                    }
+                    fs.sort()
+                    setFloors(fs)
+                    setSelectedFloor(fs[0])
+                }
             }
-            fs.sort()
-            setFloors(fs)
-            setSelectedFloor(fs[0])
-        }
+        }).catch((err) => {
+            console.log("no internet access")
+            Alert.alert("No internet access", "This app can't function without an internet connection, please connect to the internet and try again.", [
+                {
+                    text: "Exit", cancelable: false, onPress: () => {
+                        BackHandler.exitApp()
+                    }
+                }
+            ])
+        })
     }, [selectedBlock])
 
     return (
