@@ -99,6 +99,8 @@ Any and all contributions are welcome! Please create a new issue to report bugs 
 
 Any questions regarding development or build process are welcome on Github, or you can reach out to us at [@darkweebletapps](https://www.instagram.com/darkweebletapps/) on Instagram, or mail us at [darkweeblet@gmail.com](mailto:darkweeblet@gmail.com)
 
+Checkout [TODO](./TODO.md) for a list of things that need to be done.
+
 ## License
 
-This project is licensed under the GNU GPU Liscence as of October 3, 2023 - see the [LICENSE](/LICENSE) file for details.
+This project is licensed under the CC Attribution 4.0 license as of October 3, 2023 - see the [LICENSE](/LICENSE) file for details.
