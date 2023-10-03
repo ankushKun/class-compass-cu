@@ -1,3 +1,14 @@
+###
+
+credentials.json
+/credentials
+/dist
+google-services.json
+process.env.js
+
+###
+
+
 # Logs
 logs
 *.log
