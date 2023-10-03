@@ -1,4 +1,4 @@
-<a href="classcompass.github.io" target="_blank"><img src="RNAPP/assets/icon.png" width="100px" align="right"></a>
+<a href="classcompass.github.io" target="_blank"><img src="https://classcompass.github.io/icon.png" width="100px" align="right"></a>
 
 # Class Compass CU
 
