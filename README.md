@@ -99,8 +99,6 @@ Any and all contributions are welcome! Please create a new issue to report bugs 
 
 Any questions regarding development or build process are welcome on Github, or you can reach out to us at [@darkweebletapps](https://www.instagram.com/darkweebletapps/) on Instagram, or mail us at [darkweeblet@gmail.com](mailto:darkweeblet@gmail.com)
 
-Checkout [TODO](./TODO.md) for a list of things that need to be done.
-
 ## License
 
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
