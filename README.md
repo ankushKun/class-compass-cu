@@ -7,10 +7,15 @@ Codebase for Class Compass - vacant class locator for CU
 
 ## Download the app
 
-The app is available on the Google Play Store and the Apple App Store. You can download it from the links below:
+The app is available on the Google Play Store. You can download it from the links below:
 
-  
+<center>
+      
 <a href="https://play.google.com/store/apps/details?id=com.darkweeblet.classcompass" target="_blank"><img width="200px" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"></a>
+      
+Apple App Store hopefully coming soon (if we dont stay broke)
+  
+</center>
 
 ## Getting Started
 
