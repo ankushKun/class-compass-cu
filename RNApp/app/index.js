@@ -58,16 +58,18 @@ export default function Index({ navigation }) {
                 if (lastFetchedDate.getDate() != now.getDate()) {
                     const db = getDatabase(fbase);
                     get(fref(db, "/BLOCKS/")).then((snapshot) => {
-                        const data = snapshot.val()
-                        setDbData(data)
-                        EncryptedStorage.setItem("dbData", JSON.stringify(data))
-                        EncryptedStorage.setItem("lastFetched", now.toString())
-                        console.log("got new data on:", now.toString())
-                        // console.log(data)
-                        // const blocks = []
-                        // for (const block in data)
-                        //     blocks.push(block)
-                        // setBlocks(blocks)
+                        if (snapshot) {
+                            const data = snapshot.val()
+                            setDbData(data)
+                            EncryptedStorage.setItem("dbData", JSON.stringify(data))
+                            EncryptedStorage.setItem("lastFetched", now.toString())
+                            console.log("got new data on:", now.toString())
+                            // console.log(data)
+                            // const blocks = []
+                            // for (const block in data)
+                            //     blocks.push(block)
+                            // setBlocks(blocks)}
+                        }
                     })
                 } else {
                     console.log("using old data")
@@ -79,11 +81,13 @@ export default function Index({ navigation }) {
                 console.log("no lastFetched, getting new data")
                 const db = getDatabase(fbase);
                 get(fref(db, "/BLOCKS/")).then((snapshot) => {
-                    const data = snapshot.val()
-                    setDbData(data)
-                    EncryptedStorage.setItem("dbData", JSON.stringify(data))
-                    EncryptedStorage.setItem("lastFetched", now.toString())
-                    console.log("got new data on:", now.toString())
+                    if (snapshot) {
+                        const data = snapshot.val()
+                        setDbData(data)
+                        EncryptedStorage.setItem("dbData", JSON.stringify(data))
+                        EncryptedStorage.setItem("lastFetched", now.toString())
+                        console.log("got new data on:", now.toString())
+                    }
                 })
             }
             if (currentTime > 16.5 || currentTime < 9.0) {
@@ -169,7 +173,6 @@ export default function Index({ navigation }) {
                     }
                 }
             }
-            console.log(fuClasses)
             fuClasses.sort((a, b) => {
                 const aFrom = a.from.split(":")
                 const bFrom = b.from.split(":")
@@ -190,6 +193,7 @@ export default function Index({ navigation }) {
                         return 0
                 }
             })
+            console.log(JSON.stringify(fuClasses, undefined, 2))
 
             classes.sort((a, b) => {
                 const aFrom = a.from.split(":")
@@ -327,9 +331,9 @@ Download Class Compass now and make the most of your free periods with ease.
                             setSelectedFloor(e)
                         }} disabled={!selectedBlock} />
                 }
-                <Pressable style={{ paddingHorizontal: 6, ...styles.buttonStyle }} onPress={() => navigation.navigate("Login")}>
+                {/* <Pressable style={{ paddingHorizontal: 6, ...styles.buttonStyle }} onPress={() => navigation.navigate("Login")}>
                     <Image source={chat} style={{ width: 50, height: 50 }} alt="msg" />
-                </Pressable>
+                </Pressable> */}
             </View>
             <ScrollView style={{ marginTop: 10, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
                 {
