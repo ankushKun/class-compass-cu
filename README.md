@@ -41,6 +41,8 @@ git clone git@github.com:<YOUR_USERNAME>/class-compass-cu.git
 cd class-compass-cu/RNApp
 ```
 
+**NOTE: All commands assume you are inside the `RNApp` directory. If not, it will be mentioned**
+
 ### Install dependencies
 
 ```bash
@@ -64,8 +66,12 @@ export const MEASURMENT_ID = "FIREBASE_MEASURMENT_ID"
 ```
 
 * Replace the values with your Firebase project's API keys
-* You will also need a google-services.json file from Firebase. Download it and place it in `/RNApp`
-* You will have to install and login expo cli to run the app. Follow the instructions [here](https://docs.expo.io/get-started/installation/)
+* You will need to install and login to the expo cli to run the app. Follow the instructions [here](https://docs.expo.io/get-started/installation/)
+* You will also need a google-services.json file from Firebase. Download it and place it in `/RNApp`, then upload the file to eas secrets using the following command, as it will be ignored by the build.
+
+``` bash
+eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
 
 
 ### Running the app
