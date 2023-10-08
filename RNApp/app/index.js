@@ -58,6 +58,7 @@ export default function Index({ navigation }) {
                 if (lastFetchedDate.getDate() != now.getDate()) {
                     const db = getDatabase(fbase);
                     get(fref(db, "/BLOCKS/")).then((snapshot) => {
+                        console.log(snapshot)
                         if (snapshot) {
                             const data = snapshot.val()
                             setDbData(data)
@@ -74,7 +75,24 @@ export default function Index({ navigation }) {
                 } else {
                     console.log("using old data")
                     EncryptedStorage.getItem("dbData").then((dbData) => {
-                        setDbData(JSON.parse(dbData))
+                        if (!dbData) {
+                            const db = getDatabase(fbase);
+                            get(fref(db, "/BLOCKS/")).then((snapshot) => {
+                                console.log(snapshot)
+                                if (snapshot) {
+                                    const data = snapshot.val()
+                                    setDbData(data)
+                                    EncryptedStorage.setItem("dbData", JSON.stringify(data))
+                                    EncryptedStorage.setItem("lastFetched", now.toString())
+                                    console.log("got new data on:", now.toString())
+                                    // console.log(data)
+                                    // const blocks = []
+                                    // for (const block in data)
+                                    //     blocks.push(block)
+                                    // setBlocks(blocks)}
+                                }
+                            })
+                        }
                     })
                 }
             } else {
@@ -257,6 +275,7 @@ export default function Index({ navigation }) {
                             fs.push(floor)
                     }
                     fs.sort()
+                    console.log(fs)
                     setFloors(fs)
                     setSelectedFloor(fs[0])
                 }
