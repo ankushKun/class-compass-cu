@@ -3,7 +3,7 @@ export default {
     "slug": "class-compass",
     "version": "1.2.0",
     "runtimeVersion": "1.2.0",
-    "updateIdentifier": "internet notif",
+    "updateIdentifier": "warnings + info screen update",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
