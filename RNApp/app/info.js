@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, Text, View, ScrollView, Button, Image, Pressable, Linking, StatusBar as RNStatusBar } from 'react-native';
 import icon from "../assets/icon.png"
 import MarqueeView from 'react-native-marquee-view';
-import { expo } from "../app.json"
+import * as config from "../app.config"
 import close from "../assets/close.png"
 
 
@@ -20,26 +20,27 @@ export default function Info({ navigation }) {
                     <Image source={close} style={{ width: 20, height: 20 }} alt="close icon" />
                 </Pressable>
             </View>
-            <View style={{ alignItems: "center", gap: 20 }}>
-                <Pressable style={{ minWidth: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e" }}
+            <View style={{ alignItems: "center", justifyContent:"center", gap: 20 }}>
+                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
                     // onPress={() => { navigation.navigate('ReportWrong') }}
                     onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
-                ><Text style={styles.text}>Report wrong information</Text></Pressable>
-                <Pressable style={{ minWidth: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e" }}
-                    // onPress={() => { navigation.navigate('Feedback') }}
+                ><Text style={styles.text}>Report wrong information </Text><Text>🚨</Text></Pressable>
+                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
                     onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
-                ><Text style={styles.text}>Give Feedback</Text></Pressable>
-                <Pressable style={{ minWidth: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e" }}
-                    // onPress={() => { navigation.navigate('BugReport') }}
-                    onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
-                ><Text style={styles.text}>Report Bug</Text></Pressable>
-                <Pressable style={{ minWidth: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e" }}
-                    onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
-                ><Text style={styles.text}>E-Mail Us</Text></Pressable>
+                ><Text style={styles.text}>E-Mail Us </Text><Text>📧</Text></Pressable>
+                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
+                    onPress={() => { Linking.openURL("https://github.com/ankushKun/class-compass-cu") }}
+                ><Text style={styles.text}>Contribute on GitHub </Text><Text>⭐️</Text></Pressable>
+                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between" }}
+                    onPress={() => { Linking.openURL("https://play.google.com/store/apps/details?id=com.darkweeblet.classcompass") }}
+                ><Text style={styles.text}>Write a review</Text><Text>🤩</Text></Pressable>
+                {/* <Pressable disabled style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: (true?"#595d5e":"#292d2e"), flexDirection:"row", alignItems:"center", justifyContent:"space-between" }}
+                    onPress={() => { Linking.openURL("") }}
+                ><Text style={styles.text}>Contributors</Text><Text>💪</Text></Pressable> */}
             </View>
-            <Text style={{ position: "absolute", bottom: 190, textAlign: "center", width: "100%" }}>Developed by Weeblet & DarkFlash</Text>
-            <Text style={{ position: "absolute", bottom: 170, textAlign: "center", width: "100%" }}>Version {expo.version} - {expo.android.versionCode}</Text>
-            <Text style={{ position: "absolute", bottom: 150, textAlign: "center", width: "100%" }}>(patch: {expo.updateIdentifier})</Text>
+            <Text style={{ position: "absolute", bottom: 190, textAlign: "center", width: "100%" }}>Developed by Ankush & Aryan</Text>
+            <Text style={{ position: "absolute", bottom: 170, textAlign: "center", width: "100%" }}>Version {config.default.version} - {config.default.android.versionCode}</Text>
+            <Text style={{ position: "absolute", bottom: 150, textAlign: "center", width: "100%" }}>(patch: {config.default.updateIdentifier})</Text>
             <MarqueeView style={{ position: "absolute", bottom: 120, textAlign: "center", width: "100%" }}>
                 <View style={{ width: "100%" }}>
                     <Text style={{ textAlign: "center", fontSize: 16 }}>This app is for educational & technical purposes only. Use it ethically.</Text>

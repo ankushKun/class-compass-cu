@@ -15,6 +15,7 @@ import share from "../assets/share.png"
 import chat from "../assets/message.png"
 import { BannerAd, BannerAdSize, InterstitialAd, TestIds } from 'react-native-google-mobile-ads';
 import analytics from '@react-native-firebase/analytics';
+import MarqueeView from 'react-native-marquee-view';
 
 
 
@@ -335,14 +336,14 @@ Download Class Compass now and make the most of your free periods with ease.
                     <Image source={info} style={{ width: 20, height: 20 }} />
                 </Pressable>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom:5 }}>
                 <SelectDropdown data={blocks} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText="Select Block"
                     onSelect={(e) => {
                         analytics().logEvent("block_select", { name: e });
                         setSelectedBlock(e)
                     }} />
                 {
-                    classesOver || classesNotStarted ? <Pressable onPress={() => {
+                    classesOver || classesNotStarted || (new Date().getDay()==0) ? <Pressable onPress={() => {
                         Alert.alert("Class nahi hai abhi, kal aana bhai\n( ͡° ͜ʖ ͡°)")
                     }}><Text style={{ ...styles.buttonStyle, paddingHorizontal: 30, paddingVertical: 15 }}>Select Floor</Text></Pressable> :
                         <SelectDropdown data={floors} buttonTextAfterSelection={() => selectedFloor} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText={selectedFloor || "Select Floor"} onSelect={(e) => {
@@ -354,7 +355,10 @@ Download Class Compass now and make the most of your free periods with ease.
                     <Image source={chat} style={{ width: 50, height: 50 }} alt="msg" />
                 </Pressable> */}
             </View>
-            <ScrollView style={{ marginTop: 10, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
+            {selectedBlock=="B1"&&<MarqueeView speed={0.15} style={{width:"100%"}}>
+                <Text style={{color:"red", fontWeight:"bold"}}>The selected block has constantly changing timetable data, we are constantly in touch with the department to keep our data updated. We apologise in advance for any inconvenience</Text>
+            </MarqueeView>}
+            <ScrollView style={{ marginTop:5, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
                 {
                     ((selectedBlock?.length > 0 && selectedFloor?.length > 0) && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
                         {
