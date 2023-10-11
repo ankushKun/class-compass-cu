@@ -4,7 +4,7 @@ import icon from "../assets/icon.png"
 import MarqueeView from 'react-native-marquee-view';
 import * as config from "../app.config"
 import close from "../assets/close.png"
-
+import EncryptedStorage from 'react-native-encrypted-storage'
 
 export default function Info({ navigation }) {
 
@@ -20,20 +20,26 @@ export default function Info({ navigation }) {
                     <Image source={close} style={{ width: 20, height: 20 }} alt="close icon" />
                 </Pressable>
             </View>
-            <View style={{ alignItems: "center", justifyContent:"center", gap: 20 }}>
-                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
+            <View style={{ alignItems: "center", justifyContent: "center", gap: 20 }}>
+                <Pressable style={{ width: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
                     // onPress={() => { navigation.navigate('ReportWrong') }}
                     onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
                 ><Text style={styles.text}>Report wrong information </Text><Text>🚨</Text></Pressable>
-                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
+                <Pressable style={{ width: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
                     onPress={() => { Linking.openURL("mailto:darkweeblet@gmail.com") }}
                 ><Text style={styles.text}>E-Mail Us </Text><Text>📧</Text></Pressable>
-                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between"  }}
+                <Pressable style={{ width: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
                     onPress={() => { Linking.openURL("https://github.com/ankushKun/class-compass-cu") }}
                 ><Text style={styles.text}>Contribute on GitHub </Text><Text>⭐️</Text></Pressable>
-                <Pressable style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection:"row", alignItems:"center", justifyContent:"space-between" }}
+                <Pressable style={{ width: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
                     onPress={() => { Linking.openURL("https://play.google.com/store/apps/details?id=com.darkweeblet.classcompass") }}
                 ><Text style={styles.text}>Write a review</Text><Text>🤩</Text></Pressable>
+                <Pressable style={{ width: "70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: "#292d2e", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}
+                    onPress={() => {
+                        EncryptedStorage.clear()
+                        navigation.navigate('Home')
+                    }}
+                ><Text style={styles.text}>Refresh Data</Text><Text>🗑</Text></Pressable>
                 {/* <Pressable disabled style={{ width:"70%", padding: 10, paddingHorizontal: 20, borderRadius: 15, backgroundColor: (true?"#595d5e":"#292d2e"), flexDirection:"row", alignItems:"center", justifyContent:"space-between" }}
                     onPress={() => { Linking.openURL("") }}
                 ><Text style={styles.text}>Contributors</Text><Text>💪</Text></Pressable> */}

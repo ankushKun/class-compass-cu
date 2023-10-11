@@ -26,6 +26,7 @@
     "firebase": "^10.3.1",
     "react": "18.2.0",
     "react-native": "0.72.5",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-google-mobile-ads": "12.1.1",
     "react-native-marquee-view": "^1.0.5",

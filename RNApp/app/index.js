@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, Text, View, ScrollView, Button, Image, Pressable, Alert, Share, SafeAreaView, StatusBar as RNStatusBar, BackHandler } from 'react-native';
-import SelectDropdown from 'react-native-select-dropdown';
+// import SelectDropdown from 'react-native-select-dropdown';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect, useState } from 'react';
 import fbase from '../firebaseConfig';
 import { getDatabase, get, ref as fref, set } from 'firebase/database'
 import EncryptedStorage from 'react-native-encrypted-storage'
+import { useIsFocused } from '@react-navigation/native';
 
 import icon from "../assets/icon.png"
 import ac from "../assets/ac.gif"
@@ -20,10 +22,13 @@ import MarqueeView from 'react-native-marquee-view';
 
 
 const days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
-const BUFFER = 10 / 60;
+const BUFFER = 10 / 60; // 10 imns
 
 export default function Index({ navigation }) {
+    const isFocused = useIsFocused();
     const dev = false;
+    const [blocksOpened, setBlocksOpened] = useState(false)
+    const [floorsOpened, setFloorsOpened] = useState(false)
     const [dbData, setDbData] = useState()
     const [blocks, setBlocks] = useState(["B1", "B2", "B3", "B4", "C1", "C2", "D1", "D2", "D3", "D4", "D7"])
     const [floors, setFloors] = useState([])
@@ -40,81 +45,55 @@ export default function Index({ navigation }) {
     const [classesNotStarted, setClassesNotStarted] = useState(false)
 
     useEffect(() => {
+        if (!isFocused) {
+            setEmptyClasses([])
+            setEmptyClassesFloor([])
+            setFutureClasses([])
+        }
         const now = new Date()
         const currentHour = now.getHours()
         const currentMinute = now.getMinutes()
         const currentTime = currentHour + currentMinute / 60
 
-        // const db = getDatabase(fbase);
-        // get(fref(db, "/")).then((snapshot) => {
-        //     const data = snapshot.val()
-        //     setDbData(data)
-        //     console.log("got new data on:", now.toString())
-        // })
+        function getLatest() {
+            console.log("getting latest")
+            const db = getDatabase(fbase);
+            get(fref(db, "/BLOCKS/")).then((snapshot) => {
+                if (snapshot) {
+                    const data = snapshot.val()
+                    setDbData(data)
+                    EncryptedStorage.setItem("dbData", JSON.stringify(data))
+                    EncryptedStorage.setItem("lastFetched", now.toString())
+                    console.log("got new data on:", now.toString())
+                    ClassesSet()
+                }
+            })
+        }
 
         EncryptedStorage.getItem("lastFetched").then((lastFetched) => {
-            if (lastFetched) {
-                const lastFetchedDate = new Date(lastFetched)
-                console.log("lastFetched:", lastFetched)
-                if (lastFetchedDate.getDate() != now.getDate()) {
-                    const db = getDatabase(fbase);
-                    get(fref(db, "/BLOCKS/")).then((snapshot) => {
-                        console.log(snapshot)
-                        if (snapshot) {
-                            const data = snapshot.val()
-                            setDbData(data)
-                            EncryptedStorage.setItem("dbData", JSON.stringify(data))
-                            EncryptedStorage.setItem("lastFetched", now.toString())
-                            console.log("got new data on:", now.toString())
-                            // console.log(data)
-                            // const blocks = []
-                            // for (const block in data)
-                            //     blocks.push(block)
-                            // setBlocks(blocks)}
-                        }
-                    })
+            const lastFetchedTime = new Date(lastFetched)
+            if (lastFetchedTime.getDate() != new Date().getDate()) {
+                console.log("last fetched not today")
+                getLatest()
+            } else {
+                console.log("last fetched today ", lastFetchedTime)
+                if (currentTime > 16.5 || currentTime < 9.0) {
+                    console.log(currentTime, "no classes")
+                    setEmptyClasses([])
                 } else {
-                    console.log("using old data")
-                    EncryptedStorage.getItem("dbData").then((dbData) => {
-                        if (!dbData) {
-                            const db = getDatabase(fbase);
-                            get(fref(db, "/BLOCKS/")).then((snapshot) => {
-                                console.log(snapshot)
-                                if (snapshot) {
-                                    const data = snapshot.val()
-                                    setDbData(data)
-                                    EncryptedStorage.setItem("dbData", JSON.stringify(data))
-                                    EncryptedStorage.setItem("lastFetched", now.toString())
-                                    console.log("got new data on:", now.toString())
-                                    // console.log(data)
-                                    // const blocks = []
-                                    // for (const block in data)
-                                    //     blocks.push(block)
-                                    // setBlocks(blocks)}
-                                }
-                            })
+                    EncryptedStorage.getItem("dbData").then((data) => {
+                        if (data) {
+                            console.log("blocks:", Object.keys(JSON.parse(data)))
+                            setDbData(JSON.parse(data))
+                            ClassesSet()
+                        } else {
+                            getLatest()
                         }
                     })
                 }
-            } else {
-                console.log("no lastFetched, getting new data")
-                const db = getDatabase(fbase);
-                get(fref(db, "/BLOCKS/")).then((snapshot) => {
-                    if (snapshot) {
-                        const data = snapshot.val()
-                        setDbData(data)
-                        EncryptedStorage.setItem("dbData", JSON.stringify(data))
-                        EncryptedStorage.setItem("lastFetched", now.toString())
-                        console.log("got new data on:", now.toString())
-                    }
-                })
-            }
-            if (currentTime > 16.5 || currentTime < 9.0) {
-                console.log(currentTime, "no classes")
-                setEmptyClasses([])
             }
         })
-    }, [])
+    }, [isFocused])
 
     function ClassesSet() {
         const now = new Date()
@@ -171,6 +150,7 @@ export default function Index({ navigation }) {
                         // if (selectedFloor == floor) {
                         if ((currentTime >= (fromTime - BUFFER) && currentTime <= (toTime - BUFFER)) || dev) // uncomment during prod
                             // if ((currentTime <= toTime) || dev) // uncomment during prod
+                            // for current classes in every floor
                             classes.push({
                                 room: room,
                                 to: clasD.TO_TIME,
@@ -179,6 +159,7 @@ export default function Index({ navigation }) {
                                 floor: floor
                             })
                         // }
+                        // for future classes in every floor
                         if (fromTime > currentTime) {
                             fuClasses.push({
                                 room: room,
@@ -192,56 +173,34 @@ export default function Index({ navigation }) {
                     }
                 }
             }
+
+            //sort fuClasses according to time and floor, flore has more priority
             fuClasses.sort((a, b) => {
-                const aFrom = a.from.split(":")
-                const bFrom = b.from.split(":")
-                const aFromHour = parseInt(aFrom[0])
-                const bFromHour = parseInt(bFrom[0])
-                const aFromMinute = parseInt(aFrom[1].split(" ")[0])
-                const bFromMinute = parseInt(bFrom[1].split(" ")[0])
-                if (aFromHour > bFromHour)
-                    return 1
-                else if (aFromHour < bFromHour)
-                    return -1
-                else {
-                    if (aFromMinute > bFromMinute)
-                        return 1
-                    else if (aFromMinute < bFromMinute)
-                        return -1
-                    else
-                        return 0
-                }
-            })
-            console.log(JSON.stringify(fuClasses, undefined, 2))
+                if (a.floor == b.floor) {
+                    const aFrom = a.from.split(":")
+                    const aFromHour = parseInt(aFrom[0])
+                    const aFromMinute = parseInt(aFrom[1].split(" ")[0]) / 60
+                    const aFromTime = aFromHour + aFromMinute
 
-            classes.sort((a, b) => {
-                const aFrom = a.from.split(":")
-                const bFrom = b.from.split(":")
-                const aFromHour = parseInt(aFrom[0])
-                const bFromHour = parseInt(bFrom[0])
-                const aFromMinute = parseInt(aFrom[1].split(" ")[0])
-                const bFromMinute = parseInt(bFrom[1].split(" ")[0])
-                if (aFromHour > bFromHour)
-                    return 1
-                else if (aFromHour < bFromHour)
-                    return -1
-                else {
-                    if (aFromMinute > bFromMinute)
-                        return 1
-                    else if (aFromMinute < bFromMinute)
-                        return -1
-                    else
-                        return 0
+                    const bFrom = b.from.split(":")
+                    const bFromHour = parseInt(bFrom[0])
+                    const bFromMinute = parseInt(bFrom[1].split(" ")[0]) / 60
+                    const bFromTime = bFromHour + bFromMinute
+
+                    return aFromTime - bFromTime
+                } else {
+                    return a.floor - b.floor
                 }
             })
 
+
+            // empty classes in current floor
             const empClassesFloor = classes.filter((classData) => { return classData.floor == selectedFloor })
             setEmptyClassesFloor(empClassesFloor)
 
             floors.sort()
-
-            // console.log(floors)
             setFloors(floors)
+
             // setSelectedFloor(classes)
             setEmptyClasses(classes)
             setFutureClasses(fuClasses)
@@ -257,7 +216,7 @@ export default function Index({ navigation }) {
         }
     }, [])
 
-    useEffect(() => ClassesSet(), [selectedFloor])
+    useEffect(() => ClassesSet(), [selectedBlock, selectedFloor])
 
     useEffect(() => {
         // check internet access
@@ -266,7 +225,7 @@ export default function Index({ navigation }) {
             method: "GET", headers: { "Content-Type": "application/json" }
         }).then((res) => {
             if (res.status == 200) {
-                console.log("internet access")
+                console.log("has internet access")
                 if (selectedBlock && dbData) {
                     const fs = []
                     for (const room in dbData[selectedBlock]) {
@@ -276,7 +235,7 @@ export default function Index({ navigation }) {
                             fs.push(floor)
                     }
                     fs.sort()
-                    console.log(fs)
+                    console.log("floors:", fs)
                     setFloors(fs)
                     setSelectedFloor(fs[0])
                 }
@@ -336,29 +295,61 @@ Download Class Compass now and make the most of your free periods with ease.
                     <Image source={info} style={{ width: 20, height: 20 }} />
                 </Pressable>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom:5 }}>
-                <SelectDropdown data={blocks} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText="Select Block"
+            <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom: 5 }}>
+                {/* <SelectDropdown data={blocks} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText="Select Block"
                     onSelect={(e) => {
                         analytics().logEvent("block_select", { name: e });
                         setSelectedBlock(e)
+                    }} /> */}
+                <DropDownPicker
+                    open={blocksOpened}
+                    setOpen={setBlocksOpened}
+                    value={selectedBlock}
+                    items={blocks.map((block) => { return { label: block, value: block } })}
+                    placeholder="Select Block"
+                    placeholderStyle={{ color: "whitesmoke" }}
+                    labelStyle={{ color: "whitesmoke", fontWeight: "bold", fontSize: 20, marginLeft: 10, marginBottom: 2 }}
+                    arrowIconStyle={{ tintColor: "whitesmoke" }}
+                    containerStyle={{ height: 40, width: "40%" }} style={{ backgroundColor: '#292d2e', borderRadius: 15 }}
+                    itemStyle={{ justifyContent: 'flex-start' }}
+                    dropDownStyle={{ backgroundColor: '#292d2e', borderColor: "#292d2e", borderWidth: 0, borderRadius: 15 }}
+                    onSelectItem={(item) => {
+                        analytics().logEvent("block_select", { name: item.value });
+                        setSelectedBlock(item.value)
                     }} />
                 {
-                    classesOver || classesNotStarted || (new Date().getDay()==0) ? <Pressable onPress={() => {
+                    classesOver || classesNotStarted || (new Date().getDay() == 0) ? <Pressable onPress={() => {
                         Alert.alert("Class nahi hai abhi, kal aana bhai\n( ͡° ͜ʖ ͡°)")
                     }}><Text style={{ ...styles.buttonStyle, paddingHorizontal: 30, paddingVertical: 15 }}>Select Floor</Text></Pressable> :
-                        <SelectDropdown data={floors} buttonTextAfterSelection={() => selectedFloor} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText={selectedFloor || "Select Floor"} onSelect={(e) => {
-                            analytics().logEvent("floor_select", { name: e });
-                            setSelectedFloor(e)
-                        }} disabled={!selectedBlock} />
+                        // <SelectDropdown data={floors} buttonTextAfterSelection={() => selectedFloor} buttonStyle={{ ...styles.buttonStyle, width: "40%" }} buttonTextStyle={{ color: "white", fontSize: 15 }} dropdownStyle={styles.dropdownStyle} defaultButtonText={selectedFloor || "Select Floor"} onSelect={(e) => {
+                        //     analytics().logEvent("floor_select", { name: e });
+                        //     setSelectedFloor(e)
+                        // }} disabled={!selectedBlock} />
+                        <DropDownPicker
+                            open={floorsOpened}
+                            setOpen={setFloorsOpened}
+                            items={floors.map((floor) => { return { label: floor, value: floor } })} defaultValue={selectedFloor}
+                            value={selectedFloor}
+                            placeholder="Select Floor"
+                            placeholderStyle={{ color: "whitesmoke" }}
+                            labelStyle={{ color: "whitesmoke", fontWeight: "bold", fontSize: 20, marginLeft: 10, marginBottom: 2 }}
+                            arrowIconStyle={{ tintColor: "whitesmoke" }}
+                            containerStyle={{ height: 40, width: "40%" }} style={{ backgroundColor: '#292d2e', borderRadius: 15 }}
+                            itemStyle={{ justifyContent: 'flex-start' }}
+                            dropDownStyle={{ backgroundColor: '#292d2e', borderColor: "#292d2e", borderWidth: 0, borderRadius: 15 }}
+                            onSelectItem={(item) => {
+                                analytics().logEvent("floor_select", { name: item.value });
+                                setSelectedFloor(item.value)
+                            }} />
                 }
                 {/* <Pressable style={{ paddingHorizontal: 6, ...styles.buttonStyle }} onPress={() => navigation.navigate("Login")}>
                     <Image source={chat} style={{ width: 50, height: 50 }} alt="msg" />
                 </Pressable> */}
             </View>
-            {selectedBlock=="B1"&&<MarqueeView speed={0.15} style={{width:"100%"}}>
-                <Text style={{color:"red", fontWeight:"bold"}}>The selected block has constantly changing timetable data, we are constantly in touch with the department to keep our data updated. We apologise in advance for any inconvenience</Text>
+            {selectedBlock == "B1" && <MarqueeView speed={0.15} style={{ width: "100%" }}>
+                <Text style={{ color: "red", fontWeight: "bold" }}>The selected block has constantly changing timetable data, we are constantly in touch with the department to keep our data updated. We apologise in advance for any inconvenience</Text>
             </MarqueeView>}
-            <ScrollView style={{ marginTop:5, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
+            <ScrollView style={{ marginTop: 5, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
                 {
                     ((selectedBlock?.length > 0 && selectedFloor?.length > 0) && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
                         {
@@ -417,12 +408,12 @@ Download Class Compass now and make the most of your free periods with ease.
                 }
             </ScrollView>
             <View>
-                {/* <BannerAd
+                <BannerAd
                     unitId={"ca-app-pub-5690642854294806/2965165646"}
                     size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
                     onAdLoaded={() => { console.log('Advert loaded') }}
                     onAdFailedToLoad={(error) => { console.log('Advert failed to load: ', error) }}
-                /> */}
+                />
             </View>
         </SafeAreaView>
     );
