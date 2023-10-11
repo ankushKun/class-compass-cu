@@ -22,11 +22,11 @@ export default {
     "android": {
         "adaptiveIcon": {
             "foregroundImage": "./assets/icon.png",
-            "backgroundColor": "#ffffff"
+            "backgroundColor": "#0000"
         },
         "package": "com.darkweeblet.classcompass",
         "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
-        "versionCode": 3
+        "versionCode": 4
     },
     "web": {
         "favicon": "./assets/icon.png"

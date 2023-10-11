@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import firebase from "@react-native-firebase/app"
-import * as config from "./process.env.js"
+import * as config from process.env.DB_ENV
 
 // Optionally import the services that you want to use
 // import {...} from "firebase/auth";
