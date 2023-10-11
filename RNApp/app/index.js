@@ -26,7 +26,7 @@ const BUFFER = 10 / 60; // 10 imns
 
 export default function Index({ navigation }) {
     const isFocused = useIsFocused();
-    const dev = false;
+    const dev = __DEV__;
     const [blocksOpened, setBlocksOpened] = useState(false)
     const [floorsOpened, setFloorsOpened] = useState(false)
     const [dbData, setDbData] = useState()
@@ -174,22 +174,55 @@ export default function Index({ navigation }) {
                 }
             }
 
-            //sort fuClasses according to time and floor, flore has more priority
+            //sort fuClasses according to time and floor, time has more priority
             fuClasses.sort((a, b) => {
-                if (a.floor == b.floor) {
-                    const aFrom = a.from.split(":")
-                    const aFromHour = parseInt(aFrom[0])
-                    const aFromMinute = parseInt(aFrom[1].split(" ")[0]) / 60
-                    const aFromTime = aFromHour + aFromMinute
+                const aFrom = a.from.split(":")
+                const aFromHour = parseInt(aFrom[0])
+                const aFromMinute = parseInt(aFrom[1].split(" ")[0]) / 60
+                const aFromTime = aFromHour + aFromMinute
 
-                    const bFrom = b.from.split(":")
-                    const bFromHour = parseInt(bFrom[0])
-                    const bFromMinute = parseInt(bFrom[1].split(" ")[0]) / 60
-                    const bFromTime = bFromHour + bFromMinute
+                const bFrom = b.from.split(":")
+                const bFromHour = parseInt(bFrom[0])
+                const bFromMinute = parseInt(bFrom[1].split(" ")[0]) / 60
+                const bFromTime = bFromHour + bFromMinute
 
-                    return aFromTime - bFromTime
-                } else {
-                    return a.floor - b.floor
+                if (aFromTime > bFromTime)
+                    return 1
+                else if (aFromTime < bFromTime)
+                    return -1
+                else {
+                    if (a.floor > b.floor)
+                        return 1
+                    else if (a.floor < b.floor)
+                        return -1
+                    else
+                        return 0
+                }
+            })
+
+            //sort classes according to time and floor, time has more priority
+            classes.sort((a, b) => {
+                const aFrom = a.from.split(":")
+                const aFromHour = parseInt(aFrom[0])
+                const aFromMinute = parseInt(aFrom[1].split(" ")[0]) / 60
+                const aFromTime = aFromHour + aFromMinute
+
+                const bFrom = b.from.split(":")
+                const bFromHour = parseInt(bFrom[0])
+                const bFromMinute = parseInt(bFrom[1].split(" ")[0]) / 60
+                const bFromTime = bFromHour + bFromMinute
+
+                if (aFromTime > bFromTime)
+                    return 1
+                else if (aFromTime < bFromTime)
+                    return -1
+                else {
+                    if (a.floor > b.floor)
+                        return 1
+                    else if (a.floor < b.floor)
+                        return -1
+                    else
+                        return 0
                 }
             })
 
@@ -349,7 +382,7 @@ Download Class Compass now and make the most of your free periods with ease.
             {selectedBlock == "B1" && <MarqueeView speed={0.15} style={{ width: "100%" }}>
                 <Text style={{ color: "red", fontWeight: "bold" }}>The selected block has constantly changing timetable data, we are constantly in touch with the department to keep our data updated. We apologise in advance for any inconvenience</Text>
             </MarqueeView>}
-            <ScrollView style={{ marginTop: 5, marginBottom: 94, maxHeight: "90%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }}>
+            <ScrollView horizontal={false} style={{ marginTop: 5, borderRadius: 15, marginVertical: 10, marginTop: 15, flexDirection: "column", gap: 10, height: "100%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }} removeClippedSubviews>
                 {
                     ((selectedBlock?.length > 0 && selectedFloor?.length > 0) && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
                         {
@@ -392,7 +425,7 @@ Download Class Compass now and make the most of your free periods with ease.
                 {
                     emptyClassesFloor.map((classData, _) => {
                         return (
-                            <View style={{ marginVertical: 10, flexDirection: "row", justifyContent: "flex-end", backgroundColor: "#c79551", minWidth: "100%", alignSelf: "center", borderRadius: 15, paddingVertical: 15 }} key={_}>
+                            <View style={{ marginBottom: 15, flexDirection: "row", justifyContent: "flex-end", backgroundColor: "#c79551", minWidth: "100%", alignSelf: "center", borderRadius: 15, paddingVertical: 15 }} key={_}>
                                 {(classData.room.includes("LAB") || classData.room.includes("SSL")) ? <Image source={computa} style={{ width: 70, height: 70, position: "absolute", left: 14, top: 12 }} /> :
                                     <View style={{ width: 70, height: 70, position: "absolute", left: 0, top: 0 }} >
                                         {classData.ac && <Image source={ac} style={{ width: 70, height: 70, position: "absolute", left: 14, top: 12 }} />}
@@ -407,7 +440,7 @@ Download Class Compass now and make the most of your free periods with ease.
                     })
                 }
             </ScrollView>
-            <View>
+            <View style={{ backgroundColor: "#c7955125" }}>
                 <BannerAd
                     unitId={"ca-app-pub-5690642854294806/2965165646"}
                     size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
