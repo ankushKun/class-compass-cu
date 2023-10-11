@@ -70,29 +70,32 @@ export default function Index({ navigation }) {
             })
         }
 
-        EncryptedStorage.getItem("lastFetched").then((lastFetched) => {
-            const lastFetchedTime = new Date(lastFetched)
-            if (lastFetchedTime.getDate() != new Date().getDate()) {
-                console.log("last fetched not today")
-                getLatest()
-            } else {
-                console.log("last fetched today ", lastFetchedTime)
-                if (currentTime > 16.5 || currentTime < 9.0) {
-                    console.log(currentTime, "no classes")
-                    setEmptyClasses([])
+        async function getLocal() {
+            EncryptedStorage.getItem("lastFetched").then((lastFetched) => {
+                const lastFetchedTime = new Date(lastFetched)
+                if (lastFetchedTime.getDate() != new Date().getDate()) {
+                    console.log("last fetched not today")
+                    getLatest()
                 } else {
-                    EncryptedStorage.getItem("dbData").then((data) => {
-                        if (data) {
-                            console.log("blocks:", Object.keys(JSON.parse(data)))
-                            setDbData(JSON.parse(data))
-                            ClassesSet()
-                        } else {
-                            getLatest()
-                        }
-                    })
+                    console.log("last fetched today ", lastFetchedTime)
+                    if (currentTime > 16.5 || currentTime < 9.0) {
+                        console.log(currentTime, "no classes")
+                        setEmptyClasses([])
+                    } else {
+                        EncryptedStorage.getItem("dbData").then((data) => {
+                            if (data) {
+                                console.log("blocks:", Object.keys(JSON.parse(data)))
+                                setDbData(JSON.parse(data))
+                                ClassesSet()
+                            } else {
+                                getLatest()
+                            }
+                        })
+                    }
                 }
-            }
-        })
+            })
+        }
+        getLocal()
     }, [isFocused])
 
     function ClassesSet() {

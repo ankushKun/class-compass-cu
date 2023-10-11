@@ -52,17 +52,17 @@ npm install
 ### Setup API keys
 
 * Create a new Firebase project
-* Create a new file `process.env.js` in `/RNApp` and add the following code:
+* Create a new file `.env` in `/RNApp` and add the following environment variables 
 
-```javascript
-export const API_KEY = "FIREBASE_API_KEY"
-export const AUTH_DOMAIN = "FIREBASE_AUTH_DOMAIN"
-export const DB_URL = "FIREBASE_DB_URL"
-export const PROJ_ID = "FIREBASE_PROJECT_ID"
-export const STORAGE_BUCKET = "FIREBASE_STORAGE_BUCKET"
-export const MESSAGING_SENDER_ID = "FIREBASE_MESSAGE_SENDER_ID"
-export const APP_ID = "FIREBASE_APP_ID"
-export const MEASURMENT_ID = "FIREBASE_MEASURMENT_ID"
+```env
+API_KEY=FIREBASE_API_KEY
+AUTH_DOMAIN=FIREBASE_AUTH_DOMAIN
+DB_URL=FIREBASE_DB_URL
+PROJ_ID=FIREBASE_PROJECT_ID
+STORAGE_BUCKET=FIREBASE_STORAGE_BUCKET
+MESSAGING_SENDER_ID=FIREBASE_MESSAGE_SENDER_ID
+APP_ID=FIREBASE_APP_ID
+MEASURMENT_ID=FIREBASE_MEASURMENT_ID
 ```
 
 * Replace the values with your Firebase project's API keys
@@ -71,6 +71,12 @@ export const MEASURMENT_ID = "FIREBASE_MEASURMENT_ID"
 
 ``` bash
 eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
+```
+
+* You also need to add the environment variables in `.env` to the EAS secrets individually. You can do this by running the following command for each variable
+
+``` bash
+eas secret:create --scope project --name <ENV_VAR_NAME> --value <ENV_VAR_VALUE>
 ```
 
 
