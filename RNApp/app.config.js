@@ -1,8 +1,8 @@
 export default {
     "name": "Class Compass",
     "slug": "class-compass",
-    "version": "1.2.0",
-    "runtimeVersion": "1.2.0",
+    "version": "1.3.0",
+    "runtimeVersion": "1.3.0",
     "updateIdentifier": "new dropdown, data fetch fix",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,7 +26,7 @@ export default {
         },
         "package": "com.darkweeblet.classcompass",
         "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
-        "versionCode": 4
+        "versionCode": 5
     },
     "web": {
         "favicon": "./assets/icon.png"
