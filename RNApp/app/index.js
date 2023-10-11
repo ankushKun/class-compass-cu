@@ -26,7 +26,7 @@ const BUFFER = 10 / 60; // 10 imns
 
 export default function Index({ navigation }) {
     const isFocused = useIsFocused();
-    const dev = __DEV__;
+    const dev = false;
     const [blocksOpened, setBlocksOpened] = useState(false)
     const [floorsOpened, setFloorsOpened] = useState(false)
     const [dbData, setDbData] = useState()
@@ -382,7 +382,7 @@ Download Class Compass now and make the most of your free periods with ease.
             {selectedBlock == "B1" && <MarqueeView speed={0.15} style={{ width: "100%" }}>
                 <Text style={{ color: "red", fontWeight: "bold" }}>The selected block has constantly changing timetable data, we are constantly in touch with the department to keep our data updated. We apologise in advance for any inconvenience</Text>
             </MarqueeView>}
-            <ScrollView horizontal={false} style={{ marginTop: 5, borderRadius: 15, marginVertical: 10, marginTop: 15, flexDirection: "column", gap: 10, height: "100%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }} removeClippedSubviews>
+            <ScrollView horizontal={false} style={{ marginTop: 5, borderRadius: 15, marginVertical: 10, marginTop: 15, flexDirection: "column", gap: 10, height: "100%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }} removeClippedSubviews contentContainerStyle={{ alignItems: "center" }}>
                 {
                     ((selectedBlock?.length > 0 && selectedFloor?.length > 0) && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
                         {

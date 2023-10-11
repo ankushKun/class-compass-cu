@@ -6,7 +6,7 @@ credentials
 /dist
 dist
 google-services.json
-process.env.js
+*.env.*
 *.apk
 
 ###
