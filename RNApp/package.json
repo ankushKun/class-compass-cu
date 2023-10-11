@@ -37,8 +37,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
-    "react-native-dotenv": "^3.4.9",
     "tailwindcss": "^3.3.3"
   },
   "private": true

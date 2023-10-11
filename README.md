@@ -55,28 +55,22 @@ npm install
 * Create a new file `.env` in `/RNApp` and add the following environment variables 
 
 ```env
-API_KEY=FIREBASE_API_KEY
-AUTH_DOMAIN=FIREBASE_AUTH_DOMAIN
-DB_URL=FIREBASE_DB_URL
-PROJ_ID=FIREBASE_PROJECT_ID
-STORAGE_BUCKET=FIREBASE_STORAGE_BUCKET
-MESSAGING_SENDER_ID=FIREBASE_MESSAGE_SENDER_ID
-APP_ID=FIREBASE_APP_ID
-MEASURMENT_ID=FIREBASE_MEASURMENT_ID
+EXPO_PUBLIC_API_KEY=FIREBASE_API_KEY
+EXPO_PUBLIC_AUTH_DOMAIN=FIREBASE_AUTH_DOMAIN
+EXPO_PUBLIC_DB_URL=FIREBASE_DB_URL
+EXPO_PUBLIC_PROJ_ID=FIREBASE_PROJECT_ID
+EXPO_PUBLIC_STORAGE_BUCKET=FIREBASE_STORAGE_BUCKET
+EXPO_PUBLIC_MESSAGING_SENDER_ID=FIREBASE_MESSAGE_SENDER_ID
+EXPO_PUBLIC_APP_ID=FIREBASE_APP_ID
+EXPO_PUBLIC_MEASURMENT_ID=FIREBASE_MEASURMENT_ID
 ```
 
 * Replace the values with your Firebase project's API keys
 * You will need to install and login to the expo cli to run the app. Follow the instructions [here](https://docs.expo.io/get-started/installation/)
-* You will also need a google-services.json file from Firebase. Download it and place it in `/RNApp`, then upload the file to eas secrets using the following command, as it will be ignored by the build.
+* You will also need a google-services.json file from Firebase. Add an app, download its google-services.json and place it in `/RNApp`, then upload the file to eas secrets using the following command, as it will be ignored by the build.
 
 ``` bash
 eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
-```
-
-* You also need to add the environment variables in `.env` to the EAS secrets individually. You can do this by running the following command for each variable
-
-``` bash
-eas secret:create --scope project --name <ENV_VAR_NAME> --value <ENV_VAR_VALUE>
 ```
 
 

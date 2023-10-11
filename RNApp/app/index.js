@@ -387,21 +387,10 @@ Download Class Compass now and make the most of your free periods with ease.
             </MarqueeView>}
             <ScrollView horizontal={false} style={{ marginTop: 5, borderRadius: 15, marginVertical: 10, marginTop: 15, flexDirection: "column", gap: 10, height: "100%", borderRadius: 15, maxWidth: "90%", alignSelf: "center", overflow: "hidden" }} removeClippedSubviews contentContainerStyle={{ alignItems: "center" }}>
                 {
-                    ((selectedBlock?.length > 0 && selectedFloor?.length > 0) && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
+                    (classesOngoing && selectedBlock?.toString() && emptyClassesFloor.length == 0) && <View style={{ flex: 1, justifyContent: "start" }}>
                         {
-                            !selectedBlock && <View>
-                                <Text style={{ color: "black", textAlign: "center", fontWeight: "bold", fontSize: 30 }}>Select a block.</Text>
-                            </View>
-                        }
-                        {
-                            (selectedBlock && !selectedFloor) && <View>
-                                <Text style={{ color: "black", textAlign: "center", fontWeight: "bold", fontSize: 30 }}>Select a floor.</Text>
-                            </View>
-                        }
-                        {
-                            classesOngoing && <View style={{ marginVertical: 10, flexDirection: "col", justifyContent: "center", backgroundColor: "#c79551", minWidth: "100%", alignSelf: "center", borderRadius: 15, paddingVertical: 15 }}>
+                            <View style={{ marginVertical: 10, flexDirection: "col", justifyContent: "center", backgroundColor: "#c79551", minWidth: "100%", alignSelf: "center", borderRadius: 15, paddingVertical: 15 }}>
                                 <View>
-
                                     {
                                         (emptyClasses.length == 0 && futureClasses.length == 0) && <Text style={{ color: "black", textAlign: "center", fontWeight: "bold", fontSize: 20 }}>No empty classes available {":'("} </Text>
                                     }
