@@ -73,6 +73,11 @@ EXPO_PUBLIC_MEASURMENT_ID=FIREBASE_MEASURMENT_ID
 eas secret:create --scope project --name GOOGLE_SERVICES_JSON --type file --value ./google-services.json
 ```
 
+* Also upload the keys in .env file to eas secrets using the following command, as it will be ignored by the build.
+
+``` bash
+eas secret:push --scope project --env-file ./.env
+```
 
 ### Running the app
 

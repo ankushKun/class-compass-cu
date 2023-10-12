@@ -6,10 +6,10 @@ credentials
 /dist
 dist
 google-services.json
-*.env.*
 *.apk
 *.aab
 build
+*.env.*
 
 ###
 

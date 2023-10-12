@@ -26,7 +26,7 @@ export default {
         },
         "package": "com.darkweeblet.classcompass",
         "googleServicesFile": process.env.GOOGLE_SERVICES_JSON,
-        "versionCode": 5
+        "versionCode": 6
     },
     "web": {
         "favicon": "./assets/icon.png"
