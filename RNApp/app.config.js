@@ -3,7 +3,7 @@ export default {
     "slug": "class-compass",
     "version": "1.3.0",
     "runtimeVersion": "1.3.0",
-    "updateIdentifier": "new dropdown, data fetch fix",
+    "updateIdentifier": "fixed crashes and bugs",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",

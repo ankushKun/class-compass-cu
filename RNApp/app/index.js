@@ -30,7 +30,7 @@ export default function Index({ navigation }) {
     const [blocksOpened, setBlocksOpened] = useState(false)
     const [floorsOpened, setFloorsOpened] = useState(false)
     const [dbData, setDbData] = useState()
-    const [blocks, setBlocks] = useState(["B1", "B2", "B3", "B4", "C1", "C2", "D1", "D2", "D3", "D4", "D7"])
+    const [blocks, setBlocks] = useState(["B1", "B2", "B3", "B4", "C1", "C2", "C3", "D1", "D2", "D3", "D4", "D7"])
     const [floors, setFloors] = useState([])
     const [weekday, setWeekday] = useState(days[new Date().getDay() - 1])
     // const [weekday, setWeekday] = useState("MONDAY")

@@ -12,14 +12,14 @@ import * as Config from "./process.env.js"
 // Initialize Firebase
 
 const firebaseConfig = {
-    apiKey: Config.EXPO_PUBLIC_API_KEY,
-    authDomain: Config.EXPO_PUBLIC_AUTH_DOMAIN,
-    databaseURL: Config.EXPO_PUBLIC_DB_URL,
-    projectId: Config.EXPO_PUBLIC_PROJ_ID,
-    storageBucket: Config.EXPO_PUBLIC_STORAGE_BUCKET,
-    messagingSenderId: Config.EXPO_PUBLIC_MESSAGING_SENDER_ID,
-    appId: Config.EXPO_PUBLIC_APP_ID,
-    measurmentId: Config.EXPO_PUBLIC_MEASURMENT_ID
+    apiKey: Config.API_KEY,
+    authDomain: Config.AUTH_DOMAIN,
+    databaseURL: Config.DB_URL,
+    projectId: Config.PROJ_ID,
+    storageBucket: Config.STORAGE_BUCKET,
+    messagingSenderId: Config.MESSAGING_SENDER_ID,
+    appId: Config.APP_ID,
+    measurmentId: Config.MEASURMENT_ID
 }
 
 const fbase = initializeApp(firebaseConfig);
